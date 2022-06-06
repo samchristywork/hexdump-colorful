@@ -45,7 +45,7 @@ void setColor(int c) {
   for (int i = 0; i < numFuncs; i++) {
     if (characterClass[i].active) {
       if (characterClass[i].function(c)) {
-        printf("[%d;%dm", characterClass[i].colorA, characterClass[i].colorB);
+        printf("\033[%d;%dm", characterClass[i].colorA, characterClass[i].colorB);
         colored = 1;
       }
     }
@@ -53,7 +53,7 @@ void setColor(int c) {
 
   for (int i = 0; i < strlen(isHighlighted); i++) {
     if (c == isHighlighted[i]) {
-      printf("[1;%dm", 31);
+      printf("\033[1;%dm", 31);
       colored = 1;
     }
   }
@@ -62,7 +62,7 @@ void setColor(int c) {
     c += seed * 1234;
     c = c % (232 - 17);
     c += 17;
-    printf("[38;5;%dm", c);
+    printf("\033[38;5;%dm", c);
   }
 }
 
