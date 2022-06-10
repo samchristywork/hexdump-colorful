@@ -1,3 +1,5 @@
+![Banner](https://s-christy.com/status-banner-service/hexdump-colorful/banner-slim.svg)
+
 ## Overview
 
 `hexdump_colorful` is a "clone" of hexdump that colorizes the output to make it
@@ -44,3 +46,9 @@ Highlight character classes by specifying one of the following switches:
 ```
 make
 ```
+
+## License
+
+This work is licensed under the GNU General Public License version 3 (GPLv3).
+
+[<img src="https://s-christy.com/status-banner-service/GPLv3_Logo.svg" width="150" />](https://www.gnu.org/licenses/gpl-3.0.en.html)
