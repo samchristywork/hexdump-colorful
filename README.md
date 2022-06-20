@@ -13,6 +13,11 @@ Simply type `make` to build the program. The output will be placed in the
 
 ## Usage
 
+Invoke the program like you would any other, with a filename as the first
+positional argument. You can specify several options as command line
+parameters, including highlighting specific character classes and controlling
+the color generation. Here is the usage message for reference:
+
 ```
 Usage: hexdump-colorful [-aAibndglPpsux] [-C] [-S seed] [-o] [-H character] [-X character] filename (- for stdin)
 
