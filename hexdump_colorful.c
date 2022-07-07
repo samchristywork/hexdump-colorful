@@ -11,6 +11,11 @@ int istrue(int c) { return c; }
 
 char isHighlighted[256];
 
+/*
+ * A data structure that holds information about the different character
+ * classes, including filter functions, representative symbols and colors, and
+ * a brief description for a usage message.
+ */
 struct characterClass_t {
   char c;
   char *function_name;
@@ -39,9 +44,17 @@ struct characterClass_t characterClass[] = {
 };
 int numFuncs = sizeof(characterClass) / sizeof(struct characterClass_t);
 
+/*
+ * Outputs color codes according to the provided value, and the rules specified
+ * by the user via command line arguments.
+ */
 void setColor(int c) {
   int colored = 0;
 
+  /*
+   * Highlight the area according to the functions in the list of active
+   * character classes.
+   */
   for (int i = 0; i < numFuncs; i++) {
     if (characterClass[i].active) {
       if (characterClass[i].function(c)) {
@@ -51,6 +64,9 @@ void setColor(int c) {
     }
   }
 
+  /*
+   * Handle the highlighted bytes specified by the `-H` argument.
+   */
   for (int i = 0; i < strlen(isHighlighted); i++) {
     if (c == isHighlighted[i]) {
       printf("\033[1;%dm", 31);
@@ -58,6 +74,10 @@ void setColor(int c) {
     }
   }
 
+  /*
+   * Add random colors to all of the uncolored output (if colorRand is turned
+   * on).
+   */
   if (colorRand && !colored) {
     c += seed * 1234;
     c = c % (232 - 17);
@@ -66,8 +86,14 @@ void setColor(int c) {
   }
 }
 
-void clearColor() { printf("[0m"); }
+/*
+ * Clears the current color of the output.
+ */
+void clearColor() { fprintf(stdout, "\033[0m"); }
 
+/*
+ * Print out a usage statement and exit.
+ */
 void usage(char *argv[]) {
   fprintf(
       stderr,
@@ -107,6 +133,9 @@ int main(int argc, char *argv[]) {
   char optstring[255];
   sprintf(optstring, "%sS:oH:X:CY", classOptions);
 
+  /*
+   * Process command line arguments
+   */
   int opt;
   while ((opt = getopt(argc, argv, optstring)) != -1) {
     int something = 0;
@@ -161,6 +190,9 @@ int main(int argc, char *argv[]) {
     }
   }
 
+  /*
+   * Refuse to output to a file
+   */
   if(!consoleOverride && !isatty(fileno(stdout))){
     fprintf(stderr, "This program can only print to a console. -C to override.\n");
     usage(argv);
@@ -171,6 +203,10 @@ int main(int argc, char *argv[]) {
     usage(argv);
   }
 
+  /*
+   * Open the file specified by the user. "-" is a reserved filename that means
+   * "stdin".
+   */
   FILE *f;
   if (strncmp(argv[optind], "-", 2) == 0) {
     f = fopen("/dev/stdin", "rb");
@@ -182,7 +218,14 @@ int main(int argc, char *argv[]) {
     exit(EXIT_FAILURE);
   }
 
+  /*
+   * Main loop.
+   */
   while (1) {
+
+    /*
+     * Read in chunks of 16 bytes.
+     */
     unsigned char buf[16];
     bzero(buf, 16);
     int len = fread(buf, 1, 16, f);
@@ -190,6 +233,10 @@ int main(int argc, char *argv[]) {
       clearColor();
       break;
     }
+
+    /*
+     * Print out the hex representation of the byte.
+     */
     int i;
     for (i = 0; i < len; i++) {
       unsigned char c = buf[i];
@@ -197,11 +244,23 @@ int main(int argc, char *argv[]) {
       printf("%2.2x ", c);
       clearColor();
     }
+
+    /*
+     * Extra padding if less than 16 bytes were read.
+     */
     for (; i < 16; i++) {
       printf("   ");
     }
+
+    /*
+     * Divide the different "panes".
+     */
     clearColor();
-    printf("| ");
+    fprintf(stdout, "| ");
+
+    /*
+     * Print out the ASCII representation of the 16 bytes.
+     */
     for (i = 0; i < len; i++) {
       unsigned char c = buf[i];
       if (isalnum(c) || ispunct(c)) {
