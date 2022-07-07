@@ -8,4 +8,3 @@ build/hexdump_colorful: hexdump_colorful.c
 
 clean:
 	rm -rf build/
-
