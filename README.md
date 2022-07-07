@@ -46,6 +46,23 @@ Highlight character classes by specifying one of the following switches:
  -z     Checks the truth value of the character.
 ```
 
+Here's an example of some typical output:
+
+<p align="center">
+  <img alt="Selecting Character Classes" src="./example/selecting_classes.png">
+<p>
+
+## Color Key
+
+The colors that this program outputs have different meanings. You can print out
+a key that lists all of the different command line options, their associated
+`ctype` function, and their description, in the color that they will show up as.
+This output looks like this:
+
+<p align="center">
+  <img alt="Color Key" src="./example/color_key.png">
+<p>
+
 ## Dependencies
 
 ```
