@@ -58,7 +58,7 @@ void setColor(int c) {
   for (int i = 0; i < numFuncs; i++) {
     if (characterClass[i].active) {
       if (characterClass[i].function(c)) {
-        printf("\033[%d;%dm", characterClass[i].colorA, characterClass[i].colorB);
+        fprintf(stdout, "\033[%d;%dm", characterClass[i].colorA, characterClass[i].colorB);
         colored = 1;
       }
     }
@@ -69,7 +69,7 @@ void setColor(int c) {
    */
   for (int i = 0; i < strlen(isHighlighted); i++) {
     if (c == isHighlighted[i]) {
-      printf("\033[1;%dm", 31);
+      fprintf(stdout, "\033[1;%dm", 31);
       colored = 1;
     }
   }
@@ -82,7 +82,7 @@ void setColor(int c) {
     c += seed * 1234;
     c = c % (232 - 17);
     c += 17;
-    printf("\033[38;5;%dm", c);
+    fprintf(stdout, "\033[38;5;%dm", c);
   }
 }
 
@@ -160,7 +160,7 @@ int main(int argc, char *argv[]) {
     }
     if (opt == 'Y') {
       for (int i = 0; i < numFuncs; i++) {
-        printf("[%d;%dm", characterClass[i].colorA, characterClass[i].colorB);
+        fprintf(stdout, "\033[%d;%dm", characterClass[i].colorA, characterClass[i].colorB);
         fprintf(stdout, " -%c %s\t%s", characterClass[i].c,
                 characterClass[i].function_name,
                 characterClass[i].description);
@@ -241,7 +241,7 @@ int main(int argc, char *argv[]) {
     for (i = 0; i < len; i++) {
       unsigned char c = buf[i];
       setColor(c);
-      printf("%2.2x ", c);
+      fprintf(stdout, "%2.2x ", c);
       clearColor();
     }
 
@@ -249,7 +249,7 @@ int main(int argc, char *argv[]) {
      * Extra padding if less than 16 bytes were read.
      */
     for (; i < 16; i++) {
-      printf("   ");
+      fprintf(stdout, "   ");
     }
 
     /*
@@ -265,15 +265,15 @@ int main(int argc, char *argv[]) {
       unsigned char c = buf[i];
       if (isalnum(c) || ispunct(c)) {
         setColor(c);
-        printf("%c", c);
+        fprintf(stdout, "%c", c);
         clearColor();
       } else {
         setColor(c);
-        printf(".");
+        fprintf(stdout, ".");
         clearColor();
       }
     }
-    printf("\n");
+    fprintf(stdout, "\n");
   }
   exit(EXIT_SUCCESS);
 }
