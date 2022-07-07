@@ -49,6 +49,7 @@ Highlight character classes by specifying one of the following switches:
 ## Dependencies
 
 ```
+gcc
 make
 ```
 
