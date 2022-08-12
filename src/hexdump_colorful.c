@@ -19,6 +19,7 @@ char isHighlighted[256];
  */
 struct characterClass_t {
   char c;
+  char *longopt;
   char *function_name;
   int (*function)(int);
   int active;
@@ -28,20 +29,20 @@ struct characterClass_t {
 };
 
 struct characterClass_t characterClass[] = {
-    {'A', "isalpha", isalpha, 0, "Checks for an alphabetic character.\n", 1, 29},
-    {'P', "isprint", isprint, 0, "Checks for any printable character including space.\n", 1, 30},
-    {'a', "isalnum", isalnum, 0, "Checks for an alphanumeric character.\n", 1, 31},
-    {'b', "isblank", isblank, 0, "Checks for a blank character; that is, a space or a tab.\n", 1, 32},
-    {'d', "isdigit", isdigit, 0, "Checks for a digit (0 through 9).\n", 1, 33},
-    {'g', "isgraph", isgraph, 0, "Checks for any printable character except space.\n", 1, 34},
-    {'i', "isascii", isascii, 0, "Checks whether it is a 7-bit unsigned char value that fits into the ASCII character set.\n", 1, 35},
-    {'l', "islower", islower, 0, "Checks for a lowercase character.\n", 1, 36},
-    {'n', "iscntrl", iscntrl, 0, "Checks for a control character.\n", 0, 29},
-    {'p', "ispunct", ispunct, 0, "Checks for any printable character which is not a space or an alphanumeric character.\n", 0, 31},
-    {'s', "isspace", isspace, 0, "Checks for white-space characters.\n", 0, 32},
-    {'u', "isupper", isupper, 0, "Checks for an uppercase letter.\n", 0, 33},
-    {'x', "isxdigit", isxdigit, 0, "Checks for hexadecimal digits, that is, one of \"123456789abcdefABCDEF\".\n", 0, 34},
-    {'z', "istrue", istrue, 0, "Checks the truth value of the character.\n", 0, 35},
+    {'A', "alpha", "isalpha", isalpha, 0, "Checks for an alphabetic character.\n", 1, 29},
+    {'P', "print", "isprint", isprint, 0, "Checks for any printable character including space.\n", 1, 30},
+    {'a', "alnum", "isalnum", isalnum, 0, "Checks for an alphanumeric character.\n", 1, 31},
+    {'b', "blank", "isblank", isblank, 0, "Checks for a blank character; that is, a space or a tab.\n", 1, 32},
+    {'d', "digit", "isdigit", isdigit, 0, "Checks for a digit (0 through 9).\n", 1, 33},
+    {'g', "graph", "isgraph", isgraph, 0, "Checks for any printable character except space.\n", 1, 34},
+    {'i', "ascii", "isascii", isascii, 0, "Checks whether it is a 7-bit unsigned char value that fits into the ASCII character set.\n", 1, 35},
+    {'l', "lower", "islower", islower, 0, "Checks for a lowercase character.\n", 1, 36},
+    {'n', "cntrl", "iscntrl", iscntrl, 0, "Checks for a control character.\n", 0, 29},
+    {'p', "punct", "ispunct", ispunct, 0, "Checks for any printable character which is not a space or an alphanumeric character.\n", 0, 31},
+    {'s', "space", "isspace", isspace, 0, "Checks for white-space characters.\n", 0, 32},
+    {'u', "upper", "isupper", isupper, 0, "Checks for an uppercase letter.\n", 0, 33},
+    {'x', "xdigit", "isxdigit", isxdigit, 0, "Checks for hexadecimal digits, that is, one of \"123456789abcdefABCDEF\".\n", 0, 34},
+    {'z', "true", "istrue", istrue, 0, "Checks the truth value of the character.\n", 0, 35},
 };
 int numFuncs = sizeof(characterClass) / sizeof(struct characterClass_t);
 
