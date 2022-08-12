@@ -100,12 +100,12 @@ void usage(char *argv[]) {
       stderr,
       "Usage: %s [-aAibndglPpsux] [-C] [-S seed] [-o] [-H character] [-X "
       "character] filename (- for stdin)\n\n"
-      " -C\tAllow non-console output.\n"
-      " -S\tSpecify the seed to use for random color generation.\n"
-      " -o\tTurn off the random color generation.\n"
-      " -Y\tDisplay syntax highlighting color key.\n\n"
-      " -H character\tHighlight a character. Can be specified multiple times.\n"
-      " -X character\tHighlight a character by hex value. Can be specified "
+      " -C,--no-console                Allow non-console output.\n"
+      " -S,--seed                      Specify the seed to use for random color generation.\n"
+      " -o,--no-random                 Turn off the random color generation.\n"
+      " -Y,--key                       Display syntax highlighting color key.\n\n"
+      " -H,--highlight     character   Highlight a character. Can be specified multiple times.\n"
+      " -X,--hex-highlight character   Highlight a character by hex value. Can be specified "
       "multiple times.\n\n"
       "Highlight character classes defined by <ctype.h> by specifying one of "
       "the following switches:\n\n",
