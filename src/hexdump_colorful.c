@@ -140,6 +140,12 @@ int main(int argc, char *argv[]) {
   sprintf(optstring, "%sS:oH:X:CY", classOptions);
   static struct option long_options[] = {
       {"help", no_argument, 0, 'h'},
+      {"no-console", no_argument, 0, 'C'},
+      {"seed", required_argument, 0, 'S'},
+      {"no-random", no_argument, 0, 'o'},
+      {"key", no_argument, 0, 'Y'},
+      {"highlight", required_argument, 0, 'H'},
+      {"hex-highlight", required_argument, 0, 'X'},
       {0, 0, 0, 0},
   };
   while ((opt = getopt_long(argc, argv, optstring, long_options, &option_index)) != -1) {
