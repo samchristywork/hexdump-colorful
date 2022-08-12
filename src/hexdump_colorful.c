@@ -219,7 +219,7 @@ int main(int argc, char *argv[]) {
   /*
    * Refuse to output to a file
    */
-  if(!consoleOverride && !isatty(fileno(stdout))){
+  if (!consoleOverride && !isatty(fileno(stdout))) {
     fprintf(stderr, "This program can only print to a console. -C to override.\n");
     usage(argv);
   }
