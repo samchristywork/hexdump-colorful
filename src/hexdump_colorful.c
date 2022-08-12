@@ -138,7 +138,7 @@ int main(int argc, char *argv[]) {
    */
   int opt;
   int option_index = 0;
-  char optstring[255];
+  char optstring[512];
   sprintf(optstring, "%sS:oH:X:CY", classOptions);
   static struct option long_options[] = {
       {"help", no_argument, 0, 'h'},
