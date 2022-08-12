@@ -1,4 +1,5 @@
 #include <ctype.h>
+#include <getopt.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -130,14 +131,18 @@ int main(int argc, char *argv[]) {
     classOptions[i] = characterClass[i].c;
   }
 
-  char optstring[255];
-  sprintf(optstring, "%sS:oH:X:CY", classOptions);
-
   /*
    * Process command line arguments
    */
   int opt;
-  while ((opt = getopt(argc, argv, optstring)) != -1) {
+  int option_index = 0;
+  char optstring[255];
+  sprintf(optstring, "%sS:oH:X:CY", classOptions);
+  static struct option long_options[] = {
+      {"help", no_argument, 0, 'h'},
+      {0, 0, 0, 0},
+  };
+  while ((opt = getopt_long(argc, argv, optstring, long_options, &option_index)) != -1) {
     int something = 0;
     for (int i = 0; i < numFuncs; i++) {
       if (opt == characterClass[i].c) {
