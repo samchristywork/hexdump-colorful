@@ -113,7 +113,8 @@ void usage(char *argv[]) {
       argv[0]);
 
   for (int i = 0; i < numFuncs; i++) {
-    fprintf(stderr, " -%c %s\t%s", characterClass[i].c,
+    fprintf(stderr, " -%c,--%s %s:%s", characterClass[i].c,
+            characterClass[i].longopt,
             characterClass[i].function_name,
             characterClass[i].description);
   }
