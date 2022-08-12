@@ -199,6 +199,9 @@ int main(int argc, char *argv[]) {
     if (something == 0) {
       usage(argv);
     }
+    if (opt == '?') {
+      usage(argv);
+    }
   }
 
   /*
