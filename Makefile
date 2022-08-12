@@ -11,3 +11,5 @@ test: all
 
 clean:
 	rm -rf build/
+
+.PHONY: clean test
