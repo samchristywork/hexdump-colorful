@@ -1,0 +1,15 @@
+I find this information useful to keep around. `cat` this file to print out the
+colors.
+
+[01;30mgrey[0m
+[01;31mred[0m
+[01;32mgreen[0m
+[01;33myellow[0m
+[01;34mblue[0m
+[01;35mmagenta[0m
+[01;36mcyan[0m
+[01;37mwhite[0m
+
+In C, you can embed one of the above sequences in code using printf like this:
+
+printf("\033[%d;%dm", colorA, colorB);
