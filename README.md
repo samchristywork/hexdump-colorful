@@ -6,6 +6,17 @@
 easier for users to pick out patterns and identify the character class of
 bytes.
 
+## Features
+
+- Clone of hexdump but with color
+- Color coding of character classes
+- Prints out a color key with `-Y`
+- Accepts `stdin` with `-`
+- Random color generation
+- Handles the `alpha`, `print`, `alnum`, `blank`, `digit`, `graph`, `ascii`, `lower`, `cntrl`, `punct`, `space`, `upper`, and `xdigit` character classes
+- Compatible with any terminal which uses standard color codes
+- Hex and character panes
+
 ## Build
 
 Simply type `make` to build the program. The output will be placed in the
