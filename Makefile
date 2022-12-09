@@ -9,7 +9,7 @@ build/hexdump_colorful: src/hexdump_colorful.c
 	${CC} ${CFLAGS} src/hexdump_colorful.c -o $@
 
 test: all
-	./build/hexdump_colorful Makefile
+	./build/hexdump_colorful -o -abd Makefile
 
 clean:
 	rm -rf build/
