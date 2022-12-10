@@ -5,6 +5,8 @@
 #include <string.h>
 #include <unistd.h>
 
+#include "version.h"
+
 int colorRand = 1;
 int seed = 0;
 
@@ -94,6 +96,13 @@ void setColor(int c) {
 void clearColor() { fprintf(stdout, "\033[0m"); }
 
 /*
+ * Prints the program version
+ */
+void print_version() {
+  printf("%s\n\n%s\n", VERSION_STRING, LICENSE_STRING);
+}
+
+/*
  * Print out a usage statement and exit.
  */
 void usage(char *argv[]) {
@@ -105,9 +114,9 @@ void usage(char *argv[]) {
       " -S,--seed                      Specify the seed to use for random color generation.\n"
       " -o,--no-random                 Turn off the random color generation.\n"
       " -Y,--key                       Display syntax highlighting color key.\n\n"
+      " -v,--version                   Print version information.\n"
       " -H,--highlight     character   Highlight a character. Can be specified multiple times.\n"
-      " -X,--hex-highlight character   Highlight a character by hex value. Can be specified "
-      "multiple times.\n\n"
+      " -X,--hex-highlight character   Highlight a character by hex value. Can be specified multiple times.\n\n"
       "Highlight character classes defined by <ctype.h> by specifying one of "
       "the following switches:\n\n",
       argv[0]);
@@ -139,7 +148,7 @@ int main(int argc, char *argv[]) {
   int opt;
   int option_index = 0;
   char optstring[512];
-  sprintf(optstring, "%sS:oH:X:CY", classOptions);
+  sprintf(optstring, "%sS:oH:X:CYv", classOptions);
   struct option long_options[256] = {
       {"help", no_argument, 0, 'h'},
       {"no-console", no_argument, 0, 'C'},
@@ -148,6 +157,7 @@ int main(int argc, char *argv[]) {
       {"key", no_argument, 0, 'Y'},
       {"highlight", required_argument, 0, 'H'},
       {"hex-highlight", required_argument, 0, 'X'},
+      {"version", no_argument, 0, 'v'},
   };
 
   int i;
@@ -195,6 +205,10 @@ int main(int argc, char *argv[]) {
       something = 1;
       int num = strtol(optarg, NULL, 16);
       isHighlighted[strlen(isHighlighted)] = num;
+    }
+    if (opt == 'v') {
+      print_version();
+      exit(EXIT_SUCCESS);
     }
     if (opt == 'S') {
       something = 1;
