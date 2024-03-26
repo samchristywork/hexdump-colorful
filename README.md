@@ -1,4 +1,4 @@
-![Banner](https://s-christy.com/status-banner-service/hexdump-colorful/banner-slim.svg)
+![Banner](https://s-christy.com/sbs/status-banner.svg?icon=action/token&hue=0&title=Hexdump%20Colorful&description=A%20utility%20from%20the%2090s%2C%20now%20in%20color%21)
 
 ## Overview
 
