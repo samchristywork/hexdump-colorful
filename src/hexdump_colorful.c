@@ -5,12 +5,13 @@
 #include <string.h>
 #include <unistd.h>
 
+#include "types.h"
 #include "version.h"
 
-int colorRand = 1;
-int seed = 0;
+bool colorRand = true;
+s32 seed = 0;
 
-int istrue(int c) { return c; }
+s32 istrue(s32 c) { return c; }
 
 char isHighlighted[256];
 
@@ -23,47 +24,47 @@ struct characterClass_t {
   char c;
   char *longopt;
   char *function_name;
-  int (*function)(int);
-  int active;
+  s32 (*function)(s32);
+  s32 active;
   char *description;
-  int colorA;
-  int colorB;
+  s32 colorA;
+  s32 colorB;
 };
 
 struct characterClass_t characterClass[] = {
-    {'A', "alpha", "isalpha", isalpha, 0, "Checks for an alphabetic character.\n", 1, 29},
-    {'P', "print", "isprint", isprint, 0, "Checks for any printable character including space.\n", 1, 30},
-    {'a', "alnum", "isalnum", isalnum, 0, "Checks for an alphanumeric character.\n", 1, 31},
-    {'b', "blank", "isblank", isblank, 0, "Checks for a blank character; that is, a space or a tab.\n", 1, 32},
-    {'d', "digit", "isdigit", isdigit, 0, "Checks for a digit (0 through 9).\n", 1, 33},
-    {'g', "graph", "isgraph", isgraph, 0, "Checks for any printable character except space.\n", 1, 34},
-    {'i', "ascii", "isascii", isascii, 0, "Checks whether it is a 7-bit unsigned char value that fits into the ASCII character set.\n", 1, 35},
-    {'l', "lower", "islower", islower, 0, "Checks for a lowercase character.\n", 1, 36},
-    {'n', "cntrl", "iscntrl", iscntrl, 0, "Checks for a control character.\n", 0, 29},
-    {'p', "punct", "ispunct", ispunct, 0, "Checks for any printable character which is not a space or an alphanumeric character.\n", 0, 31},
-    {'s', "space", "isspace", isspace, 0, "Checks for white-space characters.\n", 0, 32},
-    {'u', "upper", "isupper", isupper, 0, "Checks for an uppercase letter.\n", 0, 33},
-    {'x', "xdigit", "isxdigit", isxdigit, 0, "Checks for hexadecimal digits, that is, one of \"123456789abcdefABCDEF\".\n", 0, 34},
-    {'z', "true", "istrue", istrue, 0, "Checks the truth value of the character.\n", 0, 35},
+    {'A', "alpha", "isalpha", isalpha, false, "Checks for an alphabetic character.\n", 1, 29},
+    {'P', "print", "isprint", isprint, false, "Checks for any printable character including space.\n", 1, 30},
+    {'a', "alnum", "isalnum", isalnum, false, "Checks for an alphanumeric character.\n", 1, 31},
+    {'b', "blank", "isblank", isblank, false, "Checks for a blank character; that is, a space or a tab.\n", 1, 32},
+    {'d', "digit", "isdigit", isdigit, false, "Checks for a digit (0 through 9).\n", 1, 33},
+    {'g', "graph", "isgraph", isgraph, false, "Checks for any printable character except space.\n", 1, 34},
+    {'i', "ascii", "isascii", isascii, false, "Checks whether it is a 7-bit unsigned char value that fits into the ASCII character set.\n", 1, 35},
+    {'l', "lower", "islower", islower, false, "Checks for a lowercase character.\n", 1, 36},
+    {'n', "cntrl", "iscntrl", iscntrl, false, "Checks for a control character.\n", 0, 29},
+    {'p', "punct", "ispunct", ispunct, false, "Checks for any printable character which is not a space or an alphanumeric character.\n", 0, 31},
+    {'s', "space", "isspace", isspace, false, "Checks for white-space characters.\n", 0, 32},
+    {'u', "upper", "isupper", isupper, false, "Checks for an uppercase letter.\n", 0, 33},
+    {'x', "xdigit", "isxdigit", isxdigit, false, "Checks for hexadecimal digits, that is, one of \"123456789abcdefABCDEF\".\n", 0, 34},
+    {'z', "true", "istrue", istrue, false, "Checks the truth value of the character.\n", 0, 35},
 };
-int numFuncs = sizeof(characterClass) / sizeof(struct characterClass_t);
+s32 numFuncs = sizeof(characterClass) / sizeof(struct characterClass_t);
 
 /*
  * Outputs color codes according to the provided value, and the rules specified
  * by the user via command line arguments.
  */
-void setColor(int c) {
-  int colored = 0;
+void setColor(s32 c) {
+  s32 colored = false;
 
   /*
    * Highlight the area according to the functions in the list of active
    * character classes.
    */
-  for (int i = 0; i < numFuncs; i++) {
+  for (s32 i = 0; i < numFuncs; i++) {
     if (characterClass[i].active) {
       if (characterClass[i].function(c)) {
         fprintf(stdout, "\033[%d;%dm", characterClass[i].colorA, characterClass[i].colorB);
-        colored = 1;
+        colored = true;
       }
     }
   }
@@ -71,10 +72,10 @@ void setColor(int c) {
   /*
    * Handle the highlighted bytes specified by the `-H` argument.
    */
-  for (int i = 0; i < strlen(isHighlighted); i++) {
+  for (s32 i = 0; i < strlen(isHighlighted); i++) {
     if (c == isHighlighted[i]) {
       fprintf(stdout, "\033[1;%dm", 31);
-      colored = 1;
+      colored = true;
     }
   }
 
@@ -121,7 +122,7 @@ void usage(char *argv[]) {
       "the following switches:\n\n",
       argv[0]);
 
-  for (int i = 0; i < numFuncs; i++) {
+  for (s32 i = 0; i < numFuncs; i++) {
     fprintf(stderr, " -%c,--%s %s:%s", characterClass[i].c,
             characterClass[i].longopt,
             characterClass[i].function_name,
@@ -131,55 +132,54 @@ void usage(char *argv[]) {
 }
 
 int main(int argc, char *argv[]) {
-
-  int consoleOverride = 0;
+  bool consoleOverride = false;
 
   bzero(isHighlighted, 256);
 
   char classOptions[255];
   bzero(classOptions, 255);
-  for (int i = 0; i < numFuncs; i++) {
+  for (s32 i = 0; i < numFuncs; i++) {
     classOptions[i] = characterClass[i].c;
   }
 
   /*
    * Process command line arguments
    */
-  int opt;
-  int option_index = 0;
+  s32 opt;
+  s32 option_index = 0;
   char optstring[512];
   sprintf(optstring, "%sS:oH:X:CYv", classOptions);
   struct option long_options[256] = {
-      {"help", no_argument, 0, 'h'},
-      {"no-console", no_argument, 0, 'C'},
-      {"seed", required_argument, 0, 'S'},
-      {"no-random", no_argument, 0, 'o'},
-      {"key", no_argument, 0, 'Y'},
-      {"highlight", required_argument, 0, 'H'},
-      {"hex-highlight", required_argument, 0, 'X'},
-      {"version", no_argument, 0, 'v'},
+      {"help", no_argument, NULL, 'h'},
+      {"no-console", no_argument, NULL, 'C'},
+      {"seed", required_argument, NULL, 'S'},
+      {"no-random", no_argument, NULL, 'o'},
+      {"key", no_argument, NULL, 'Y'},
+      {"highlight", required_argument, NULL, 'H'},
+      {"hex-highlight", required_argument, NULL, 'X'},
+      {"version", no_argument, NULL, 'v'},
   };
 
-  int i;
-  int offset = 7;
+  s32 i;
+  s32 offset = 7;
   for (i = 0; i < numFuncs; i++) {
     long_options[i + offset].name = characterClass[i].longopt;
     long_options[i + offset].has_arg = no_argument;
-    long_options[i + offset].flag = 0;
+    long_options[i + offset].flag = NULL;
     long_options[i + offset].val = characterClass[i].c;
   }
   bzero(&long_options[i + offset + 1], sizeof(struct option));
 
   while ((opt = getopt_long(argc, argv, optstring, long_options, &option_index)) != -1) {
-    int something = 0;
-    for (int i = 0; i < numFuncs; i++) {
+    s32 something = false;
+    for (s32 i = 0; i < numFuncs; i++) {
       if (opt == characterClass[i].c) {
         characterClass[i].active = 1;
-        something = 1;
+        something = true;
       }
     }
     if (opt == 'H') {
-      something = 1;
+      something = true;
       if (strlen(optarg) != 1) {
         fprintf(stderr, "-H only accepts one character at a time.\n");
         usage(argv);
@@ -192,7 +192,7 @@ int main(int argc, char *argv[]) {
       isHighlighted[strlen(isHighlighted)] = optarg[0];
     }
     if (opt == 'Y') {
-      for (int i = 0; i < numFuncs; i++) {
+      for (s32 i = 0; i < numFuncs; i++) {
         fprintf(stdout, "\033[%d;%dm", characterClass[i].colorA, characterClass[i].colorB);
         fprintf(stdout, " -%c %s\t%s", characterClass[i].c,
                 characterClass[i].function_name,
@@ -202,8 +202,8 @@ int main(int argc, char *argv[]) {
       exit(EXIT_SUCCESS);
     }
     if (opt == 'X') {
-      something = 1;
-      int num = strtol(optarg, NULL, 16);
+      something = true;
+      s32 num = strtol(optarg, NULL, 16);
       isHighlighted[strlen(isHighlighted)] = num;
     }
     if (opt == 'v') {
@@ -211,18 +211,18 @@ int main(int argc, char *argv[]) {
       exit(EXIT_SUCCESS);
     }
     if (opt == 'S') {
-      something = 1;
+      something = true;
       seed = atoi(optarg);
     }
     if (opt == 'o') {
-      colorRand = 0;
-      something = 1;
+      colorRand = false;
+      something = true;
     }
     if (opt == 'C') {
-      consoleOverride = 1;
-      something = 1;
+      consoleOverride = true;
+      something = false;
     }
-    if (something == 0) {
+    if (something == false) {
       usage(argv);
     }
     if (opt == '?') {
@@ -261,14 +261,14 @@ int main(int argc, char *argv[]) {
   /*
    * Main loop.
    */
-  while (1) {
+  while (true) {
 
     /*
      * Read in chunks of 16 bytes.
      */
-    unsigned char buf[16];
+    char buf[16];
     bzero(buf, 16);
-    int len = fread(buf, 1, 16, f);
+    s32 len = fread(buf, 1, 16, f);
     if (len == 0) {
       clearColor();
       break;
@@ -277,9 +277,9 @@ int main(int argc, char *argv[]) {
     /*
      * Print out the hex representation of the byte.
      */
-    int i;
+    s32 i;
     for (i = 0; i < len; i++) {
-      unsigned char c = buf[i];
+      char c = buf[i];
       setColor(c);
       fprintf(stdout, "%2.2x ", c);
       clearColor();
@@ -302,7 +302,7 @@ int main(int argc, char *argv[]) {
      * Print out the ASCII representation of the 16 bytes.
      */
     for (i = 0; i < len; i++) {
-      unsigned char c = buf[i];
+      char c = buf[i];
       if (isalnum(c) || ispunct(c)) {
         setColor(c);
         fprintf(stdout, "%c", c);
